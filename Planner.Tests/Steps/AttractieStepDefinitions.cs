@@ -8,6 +8,8 @@ using Planner.Models;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.Sqlite;
+using System;
+using System.Diagnostics;
 
 namespace Planner.Tests.Steps;
 
@@ -31,7 +33,7 @@ public sealed class AttractieStepDefinitions
     [Given("attractie (.*) bestaat")]
     public async Task AttractieBestaat(string naam)
     {
-        await _databaseData.Context.Attractie.AddAsync(new Attractie { Naam = naam });
+        await _databaseData.Context.Attractie.AddAsync(new Attractie {Naam = naam });
         await _databaseData.Context.SaveChangesAsync();
     }
 
@@ -45,6 +47,43 @@ public sealed class AttractieStepDefinitions
     [Then("moet er een error (.*) komen")]
     public void Error(int httpCode)
     {
+        Assert.Equal(httpCode, (int)response!.StatusCode);
+    }
+
+    [Given("attractie (.*) bestaat niet")]
+    public async Task AttractieBestaatNiet(string naam)
+    {
+        var DBArray = await _databaseData.Context.Attractie.ToArrayAsync();
+        for(int i=0; i< await _databaseData.Context.Attractie.CountAsync<Attractie>(); i++){
+            if(DBArray[i].Naam == naam){
+                _databaseData.Context.Attractie.Remove(DBArray[i]);
+            }
+        }
+    }
+
+    [When("attractie (.*) wordt verwijderd")]
+    public async Task AttractieVerwijderd(string naam)
+    {
+        var DBArray = await _databaseData.Context.Attractie.ToArrayAsync();
+        for(int i=0; i< await _databaseData.Context.Attractie.CountAsync<Attractie>(); i++){
+            if(DBArray[i].Naam == naam){
+                var request = new RestRequest("api/Attracties/"+DBArray[i].Id);
+                response = await _client.DeleteAsync(request);
+                
+                break;
+            }
+        }
+        response = await _client.DeleteAsync(new RestRequest("api/Attracties/"+ await _databaseData.Context.Attractie.CountAsync()+1));
+        
+        
+    }
+
+    [Then("moet er een (.*) code komen")]
+    public void httpCode(int httpCode)
+    {
+        Debug.WriteLine(httpCode);
+        Debug.WriteLine((int)response!.StatusCode);
+        Console.WriteLine(httpCode);
         Assert.Equal(httpCode, (int)response!.StatusCode);
     }
 }
