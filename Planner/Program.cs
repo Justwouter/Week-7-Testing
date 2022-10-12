@@ -11,7 +11,7 @@ public static class Program
         // Eerst worden de services geladen
         // ------------------------------------
         var builder = WebApplication.CreateBuilder(args);
-        builder.Services.AddDbContext<PlannerContext>(o => o.UseSqlite("Data Source=db.db"));
+        builder.Services.AddDbContext<PlannerContext>(o => o.UseSqlite("Data Source=db.sqlite"));
         builder.Services.AddControllers()
                         // dit is nodig omdat we in een andere assembly testen: 
                         .AddApplicationPart(typeof(Program).Assembly)

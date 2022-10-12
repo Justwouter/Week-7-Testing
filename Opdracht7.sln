@@ -3,6 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Planner.Tests", "Planner.Tests\Planner.Tests.csproj", "{4D62AC97-9B84-4D1C-AC76-29B3BEACD21C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Planner", "Planner\Planner.csproj", "{97256D15-FF55-4830-9321-645CA48BC32E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -10,5 +14,15 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4D62AC97-9B84-4D1C-AC76-29B3BEACD21C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D62AC97-9B84-4D1C-AC76-29B3BEACD21C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D62AC97-9B84-4D1C-AC76-29B3BEACD21C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D62AC97-9B84-4D1C-AC76-29B3BEACD21C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97256D15-FF55-4830-9321-645CA48BC32E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97256D15-FF55-4830-9321-645CA48BC32E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97256D15-FF55-4830-9321-645CA48BC32E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97256D15-FF55-4830-9321-645CA48BC32E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -21,7 +21,7 @@ public sealed class AttractieStepDefinitions
     public AttractieStepDefinitions(DatabaseData databaseData)
     {
         _databaseData = databaseData;
-        _client = new RestClient("https://localhost:5002/");
+        _client = new RestClient("http://localhost:5001/");
 
         // Het HTTPS certificaat hoeft niet gevalideerd te worden, dus return true
         ServicePointManager.ServerCertificateValidationCallback +=
