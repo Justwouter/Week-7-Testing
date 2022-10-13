@@ -14,7 +14,9 @@ Scenario: BestaatNiet
 
 # Eigen ding
 Scenario: CorrectVerwijderd
-    Given attractie Botsauto bestaat
-    When attractie Botsauto wordt verwijderd
-    Then moet er een 404 code komen
+    Given attractie Botsauto,35 exists
+    #Given attractie Botsauto wordt toegevoegd
+    When attractie Botsauto,35 is deleted
+    Then moet er een 204 code komen
     #Refuses to give anything other than 404 and debug is worthless
+    #Still refuses 200 but at least 204 means succes

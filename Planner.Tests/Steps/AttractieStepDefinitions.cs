@@ -35,6 +35,15 @@ public sealed class AttractieStepDefinitions
     {
         await _databaseData.Context.Attractie.AddAsync(new Attractie {Naam = naam });
         await _databaseData.Context.SaveChangesAsync();
+        Xunit.Assert.Equal(1, await _databaseData.Context.Attractie.CountAsync());
+    }
+
+    [Given("attractie (.*) exists")]
+    public async Task AttractieBestaat(string[] args)
+    {
+        await _databaseData.Context.Attractie.AddAsync(new Attractie {Naam = args[0], Id = Convert.ToInt32(args[1]) });
+        await _databaseData.Context.SaveChangesAsync();
+        Xunit.Assert.Equal(1, await _databaseData.Context.Attractie.CountAsync());
     }
 
     [When("attractie (.*) wordt toegevoegd")]
@@ -67,15 +76,48 @@ public sealed class AttractieStepDefinitions
         var DBArray = await _databaseData.Context.Attractie.ToArrayAsync();
         for(int i=0; i< await _databaseData.Context.Attractie.CountAsync<Attractie>(); i++){
             if(DBArray[i].Naam == naam){
+                Xunit.Assert.Equal(DBArray[i].Naam,naam);
                 var request = new RestRequest("api/Attracties/"+DBArray[i].Id);
                 response = await _client.DeleteAsync(request);
-                
                 break;
             }
         }
-        response = await _client.DeleteAsync(new RestRequest("api/Attracties/"+ await _databaseData.Context.Attractie.CountAsync()+1));
+        //Xunit.Assert.Equal("1",naam);
+        response = await _client.DeleteAsync(new RestRequest("api/Attracties/"+ await _databaseData.Context.Attractie.CountAsync()+1));        
         
-        
+    }
+
+    [When("attractie (.*) is deleted")]
+    public async Task AttractieDeleted(string[] args)
+    {
+        var DBArray = await _databaseData.Context.Attractie.ToArrayAsync();
+        var request = new RestRequest("api/Attracties/"+args[1]);
+        response = await _client.DeleteAsync(request);   
+        await _databaseData.Context.SaveChangesAsync();     
+        // try{
+        //     response = null;
+        //     int counter = 0;
+        //     for(int i=0; i< await _databaseData.Context.Attractie.CountAsync<Attractie>(); i++){
+        //         if(DBArray[i].Naam == args[0]){
+        //             Xunit.Assert.Equal(DBArray[i].Naam,args[0]);
+        //             var request = new RestRequest("api/Attracties/"+args[1]);
+        //             response = await _client.DeleteAsync(request);
+        //             Assert.Equal(await _databaseData.Context.Attractie.CountAsync(), 0);
+        //             Assert.Equal(200, (int)response!.StatusCode);
+        //             //Xunit.Assert.NotEqual(response,response);
+        //             break;   
+        //         }
+        //      counter++;
+        //     }
+        //     if(response == null){
+        //         throw new Exception(counter.ToString());
+        //     }
+
+        // }
+        // catch{
+        //     response = await _client.DeleteAsync(new RestRequest("api/Attracties/"+ await _databaseData.Context.Attractie.CountAsync()+1));        
+        //     throw new Exception();
+        // }
     }
 
     [Then("moet er een (.*) code komen")]
@@ -86,6 +128,14 @@ public sealed class AttractieStepDefinitions
         Console.WriteLine(httpCode);
         Assert.Equal(httpCode, (int)response!.StatusCode);
     }
+
+
+    [StepArgumentTransformation]
+    public string[] ConvertStringToArray(string argument)
+    {
+        return argument.Split(",");
+    } 
+    
 }
 
 class AttractieToegevoegd

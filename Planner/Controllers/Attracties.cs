@@ -56,6 +56,7 @@ namespace Planner.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAttractie(int id)
         {
+            Console.WriteLine(id + "Is getting removed");
             var attractie = await _context.Attractie.FindAsync(id);
             if (attractie == null)
                 return NotFound();
